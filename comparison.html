@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Accounting Tool Comparison | Lane6</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #000000;
+      --card: #111111;
+      --card2: #161616;
+      --accent: #00D4C8;
+      --accent-dim: rgba(0,212,200,0.1);
+      --text: #FFFFFF;
+      --muted: #666666;
+      --muted2: #444444;
+      --border: #1e1e1e;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    header {
+      display: flex;
+      align-items: center;
+      padding: 18px 40px;
+      background: #080808;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    header img { height: 36px; }
+    .header-title {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      white-space: nowrap;
+    }
+
+    /* ── Container ── */
+    .container {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 56px 28px 80px;
+    }
+
+    /* ── Section labels ── */
+    .section-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 24px;
+    }
+
+    /* ── Comparison Table ── */
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      margin-bottom: 56px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 700px;
+    }
+    thead th {
+      padding: 24px 20px 20px;
+      text-align: center;
+      background: #141414;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.88rem;
+      font-weight: 700;
+    }
+    thead th:first-child {
+      text-align: left;
+      width: 200px;
+    }
+    .th-tool-name {
+      display: block;
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .th-tool-type {
+      display: block;
+      font-size: 0.72rem;
+      color: var(--muted);
+      font-weight: 400;
+      letter-spacing: 0.05em;
+    }
+    .th-tool-qb  { color: #2CA01C; }
+    .th-tool-xero { color: #13B5EA; }
+    .th-tool-fb  { color: #FF5A5A; }
+    .th-tool-wave { color: #9B59B6; }
+
+    tbody tr {
+      border-bottom: 1px solid #181818;
+      transition: background 0.15s;
+    }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: #131313; }
+    tbody tr:nth-child(even) { background: #0d0d0d; }
+    tbody tr:nth-child(even):hover { background: #131313; }
+
+    td {
+      padding: 16px 20px;
+      text-align: center;
+      font-size: 0.88rem;
+      vertical-align: middle;
+    }
+    td:first-child {
+      text-align: left;
+      font-size: 0.83rem;
+      font-weight: 500;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .val { color: var(--text); font-weight: 500; }
+    .check {
+      color: var(--accent);
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+    .dash {
+      color: var(--muted2);
+      font-size: 1.1rem;
+    }
+    .compatible {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--accent-dim);
+      border: 1px solid rgba(0,212,200,0.2);
+      border-radius: 100px;
+      padding: 3px 10px;
+      font-size: 0.74rem;
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: 0.04em;
+    }
+    .compatible::before {
+      content: '✓';
+      font-size: 0.8rem;
+    }
+    .note {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+    .best-for { font-size: 0.82rem; color: #bbb; line-height: 1.4; }
+
+    /* ── Survey Section ── */
+    .survey-section {
+      background: var(--card);
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      padding: 44px 40px;
+      margin-bottom: 24px;
+    }
+    .survey-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .survey-sub {
+      font-size: 0.92rem;
+      color: #aaa;
+      margin-bottom: 36px;
+      line-height: 1.6;
+    }
+
+    .survey-q {
+      margin-bottom: 32px;
+    }
+    .survey-q:last-of-type { margin-bottom: 0; }
+    .survey-q-label {
+      font-size: 0.92rem;
+      font-weight: 600;
+      margin-bottom: 14px;
+      color: var(--text);
+    }
+    .radio-group { display: flex; flex-direction: column; gap: 9px; }
+    .radio-label {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      padding: 12px 16px;
+      border-radius: 10px;
+      border: 2px solid #272727;
+      background: #181818;
+      transition: border-color 0.18s, background 0.18s;
+      font-size: 0.88rem;
+    }
+    .radio-label:hover {
+      border-color: var(--accent);
+      background: var(--accent-dim);
+    }
+    .radio-label input[type="radio"] { display: none; }
+    .radio-dot {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 2px solid #444;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: border-color 0.18s;
+    }
+    .radio-dot::after {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      transform: scale(0);
+      transition: transform 0.15s ease;
+    }
+    .radio-label input[type="radio"]:checked ~ .radio-dot {
+      border-color: var(--accent);
+    }
+    .radio-label input[type="radio"]:checked ~ .radio-dot::after {
+      transform: scale(1);
+    }
+    .radio-label:has(input:checked) {
+      border-color: var(--accent);
+      background: var(--accent-dim);
+      color: #e0fffe;
+    }
+
+    .submit-btn {
+      display: block;
+      width: 100%;
+      margin-top: 32px;
+      background: var(--accent);
+      color: #000;
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 0.97rem;
+      padding: 16px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      letter-spacing: 0.02em;
+      transition: background 0.18s, transform 0.18s, box-shadow 0.18s;
+    }
+    .submit-btn:hover {
+      background: #00bfb4;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(0,212,200,0.28);
+    }
+
+    /* ── Recommendation ── */
+    .recommendation {
+      background: linear-gradient(135deg, rgba(0,212,200,0.08) 0%, rgba(0,212,200,0.02) 100%);
+      border: 1px solid rgba(0,212,200,0.25);
+      border-radius: 16px;
+      padding: 28px 32px;
+      margin-top: 24px;
+      animation: fadeSlide 0.5s ease both;
+      display: none;
+    }
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .rec-badge {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .rec-tool {
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+    .rec-desc {
+      font-size: 0.92rem;
+      color: #bbb;
+      line-height: 1.65;
+    }
+
+    /* ── CTA ── */
+    .cta-section {
+      background: var(--card);
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      padding: 36px 40px;
+      text-align: center;
+    }
+    .cta-section p {
+      font-size: 0.92rem;
+      color: #aaa;
+      line-height: 1.6;
+      margin-bottom: 20px;
+      max-width: 480px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .cta-btn {
+      display: inline-block;
+      background: var(--accent);
+      color: #000;
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 0.97rem;
+      padding: 15px 38px;
+      border-radius: 10px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      letter-spacing: 0.02em;
+      transition: background 0.18s, transform 0.18s, box-shadow 0.18s;
+    }
+    .cta-btn:hover {
+      background: #00bfb4;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(0,212,200,0.28);
+    }
+
+    @media (max-width: 700px) {
+      header { padding: 16px 20px; }
+      .header-title { display: none; }
+      .container { padding: 36px 16px 60px; }
+      .survey-section { padding: 32px 20px; }
+      .cta-section { padding: 28px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <img src="lane6logo.png" alt="Lane6">
+  <span class="header-title">Which Accounting Tool Is Right for Your Business?</span>
+</header>
+
+<div class="container">
+  <div class="section-label">Side-by-Side Comparison</div>
+
+  <!-- ── Table ── -->
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th></th>
+          <th>
+            <span class="th-tool-name th-tool-qb">QuickBooks</span>
+            <span class="th-tool-type">by Intuit</span>
+          </th>
+          <th>
+            <span class="th-tool-name th-tool-xero">Xero</span>
+            <span class="th-tool-type">by Xero Ltd.</span>
+          </th>
+          <th>
+            <span class="th-tool-name th-tool-fb">FreshBooks</span>
+            <span class="th-tool-type">by 2ndSite Inc.</span>
+          </th>
+          <th>
+            <span class="th-tool-name th-tool-wave">Wave</span>
+            <span class="th-tool-type">by Wave HQ</span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Starting Monthly Price</td>
+          <td><span class="val">$30/mo</span></td>
+          <td><span class="val">$15/mo</span></td>
+          <td><span class="val">$19/mo</span></td>
+          <td><span class="val">Free</span></td>
+        </tr>
+        <tr>
+          <td>Free Trial</td>
+          <td><span class="check">✓</span><div class="note">30 days</div></td>
+          <td><span class="check">✓</span><div class="note">30 days</div></td>
+          <td><span class="check">✓</span><div class="note">30 days</div></td>
+          <td><span class="val">N/A</span><div class="note">Always free</div></td>
+        </tr>
+        <tr>
+          <td>Number of Users</td>
+          <td><span class="val">1–25</span><div class="note">plan dependent</div></td>
+          <td><span class="val">Unlimited</span></td>
+          <td><span class="val">1 owner</span><div class="note">+$11/ea additional</div></td>
+          <td><span class="val">Unlimited</span></td>
+        </tr>
+        <tr>
+          <td>Payroll Add-On</td>
+          <td><span class="check">✓</span><div class="note">+$45/mo base</div></td>
+          <td><span class="check">✓</span><div class="note">US plans only</div></td>
+          <td><span class="check">✓</span><div class="note">via Gusto</div></td>
+          <td><span class="check">✓</span><div class="note">$40/mo + $6/employee</div></td>
+        </tr>
+        <tr>
+          <td>Inventory Tracking</td>
+          <td><span class="check">✓</span></td>
+          <td><span class="check">✓</span></td>
+          <td><span class="dash">—</span></td>
+          <td><span class="dash">—</span></td>
+        </tr>
+        <tr>
+          <td>Mobile App Quality</td>
+          <td><span class="val">Excellent</span></td>
+          <td><span class="val">Very Good</span></td>
+          <td><span class="val">Excellent</span></td>
+          <td><span class="val">Good</span></td>
+        </tr>
+        <tr>
+          <td>Best For</td>
+          <td><span class="best-for">Small to mid-size businesses needing deep reporting</span></td>
+          <td><span class="best-for">Growing businesses with multi-user needs</span></td>
+          <td><span class="best-for">Freelancers &amp; service-based businesses</span></td>
+          <td><span class="best-for">Startups &amp; very small businesses on a budget</span></td>
+        </tr>
+        <tr>
+          <td>Corelytics Integration</td>
+          <td><span class="compatible">Compatible</span></td>
+          <td><span class="compatible">Compatible</span></td>
+          <td><span class="compatible">Compatible</span></td>
+          <td><span class="compatible">Compatible</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── Survey ── -->
+  <div class="survey-section">
+    <div class="survey-title">Still Not Sure Which Tool Fits?</div>
+    <p class="survey-sub">Answer three quick questions and we'll recommend the best match for your business.</p>
+
+    <form id="surveyForm" onsubmit="return false;">
+
+      <div class="survey-q">
+        <div class="survey-q-label">1. What is your annual revenue range?</div>
+        <div class="radio-group">
+          <label class="radio-label">
+            <input type="radio" name="revenue" value="under100k" required>
+            <span class="radio-dot"></span>
+            Under $100,000
+          </label>
+          <label class="radio-label">
+            <input type="radio" name="revenue" value="100k-500k">
+            <span class="radio-dot"></span>
+            $100,000 – $500,000
+          </label>
+          <label class="radio-label">
+            <input type="radio" name="revenue" value="500k-2m">
+            <span class="radio-dot"></span>
+            $500,000 – $2,000,000
+          </label>
+          <label class="radio-label">
+            <input type="radio" name="revenue" value="over2m">
+            <span class="radio-dot"></span>
+            Over $2,000,000
+          </label>
+        </div>
+      </div>
+
+      <div class="survey-q">
+        <div class="survey-q-label">2. How many people manage your finances?</div>
+        <div class="radio-group">
+          <label class="radio-label">
+            <input type="radio" name="team" value="just-me" required>
+            <span class="radio-dot"></span>
+            Just me
+          </label>
+          <label class="radio-label">
+            <input type="radio" name="team" value="2-3">
+            <span class="radio-dot"></span>
+            2–3 people
+          </label>
+          <label class="radio-label">
+            <input type="radio" name="team" value="4plus">
+            <span class="radio-dot"></span>
+            4 or more people
+          </label>
+        </div>
+      </div>
+
+      <div class="survey-q">
+        <div class="survey-q-label">3. What is your biggest financial headache right now?</div>
+        <div class="radio-group">
+          <label class="radio-label">
+            <input type="radio" name="pain" value="invoicing" required>
+            <span class="radio-dot"></span>
+            Invoicing and getting paid on time
+          </label>
+          <label class="radio-label">
+            <input type="radio" name="pain" value="inventory">
+            <span class="radio-dot"></span>
+            Tracking inventory and product costs
+          </label>
+          <label class="radio-label">
+            <input type="radio" name="pain" value="cashflow">
+            <span class="radio-dot"></span>
+            Understanding cash flow and financial health
+          </label>
+          <label class="radio-label">
+            <input type="radio" name="pain" value="simplicity">
+            <span class="radio-dot"></span>
+            Keeping things simple and affordable
+          </label>
+        </div>
+      </div>
+
+      <button class="submit-btn" onclick="getSuggestion()">Get My Recommendation →</button>
+    </form>
+
+    <div class="recommendation" id="recommendation">
+      <div class="rec-badge">Our Recommendation</div>
+      <div class="rec-tool" id="recTool"></div>
+      <div class="rec-desc" id="recDesc"></div>
+    </div>
+  </div>
+
+  <!-- ── CTA ── -->
+  <div class="cta-section">
+    <p>Not sure how your accounting data maps to exit readiness? A Corelytics expert can walk you through what matters most to buyers.</p>
+    <a class="cta-btn" href="#">Talk to a Corelytics Expert</a>
+  </div>
+</div>
+
+<script>
+  const tools = {
+    QuickBooks: {
+      desc: "QuickBooks is the industry standard for a reason — deep reporting, strong inventory tracking, and broad accountant familiarity make it the go-to for established businesses with complex needs or multiple team members."
+    },
+    Xero: {
+      desc: "Xero shines for growing businesses that need unlimited users, clean multi-currency support, and a modern interface. It's especially strong if you work closely with an external bookkeeper or accountant."
+    },
+    FreshBooks: {
+      desc: "FreshBooks is purpose-built for service businesses and freelancers — its invoicing tools are best-in-class, and the mobile app makes it easy to manage finances on the go without needing an accounting background."
+    },
+    Wave: {
+      desc: "Wave is the smartest choice if you're just starting out or running a lean operation — it's completely free for core accounting and invoicing, with no compromise on the basics. Perfect for solopreneurs watching overhead."
+    }
+  };
+
+  function getSuggestion() {
+    const revenue  = document.querySelector('input[name="revenue"]:checked');
+    const team     = document.querySelector('input[name="team"]:checked');
+    const pain     = document.querySelector('input[name="pain"]:checked');
+
+    if (!revenue || !team || !pain) {
+      alert('Please answer all three questions.');
+      return;
+    }
+
+    // Score: QB, Xero, FreshBooks, Wave
+    const scores = { QuickBooks: 0, Xero: 0, FreshBooks: 0, Wave: 0 };
+
+    // Revenue
+    switch (revenue.value) {
+      case 'under100k':  scores.Wave += 3; scores.FreshBooks += 1; break;
+      case '100k-500k':  scores.FreshBooks += 3; scores.Wave += 1; scores.Xero += 1; break;
+      case '500k-2m':    scores.Xero += 3; scores.QuickBooks += 2; break;
+      case 'over2m':     scores.QuickBooks += 4; scores.Xero += 1; break;
+    }
+
+    // Team
+    switch (team.value) {
+      case 'just-me': scores.Wave += 2; scores.FreshBooks += 2; break;
+      case '2-3':     scores.Xero += 3; scores.QuickBooks += 1; break;
+      case '4plus':   scores.QuickBooks += 4; scores.Xero += 2; break;
+    }
+
+    // Pain point
+    switch (pain.value) {
+      case 'invoicing':  scores.FreshBooks += 4; scores.Wave += 1; break;
+      case 'inventory':  scores.QuickBooks += 3; scores.Xero += 2; break;
+      case 'cashflow':   scores.Xero += 3; scores.QuickBooks += 2; break;
+      case 'simplicity': scores.Wave += 4; scores.FreshBooks += 1; break;
+    }
+
+    const winner = Object.entries(scores).sort((a, b) => b[1] - a[1])[0][0];
+
+    const recEl = document.getElementById('recommendation');
+    document.getElementById('recTool').textContent = winner;
+    document.getElementById('recDesc').textContent  = tools[winner].desc;
+    recEl.style.display = 'block';
+    recEl.style.animation = 'none';
+    void recEl.offsetWidth;
+    recEl.style.animation = 'fadeSlide 0.5s ease both';
+    recEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+</script>
+</body>
+</html>
